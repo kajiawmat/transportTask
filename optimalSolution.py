@@ -1,6 +1,8 @@
 from copy import deepcopy
 
 from transportTask import taskFunc
+
+
 def checkOptimal(vect_A, vect_B, matr_C, matr_X):
     n, m = len(vect_A), len(vect_B)
     count = n + m - 1
@@ -16,7 +18,7 @@ def checkOptimal(vect_A, vect_B, matr_C, matr_X):
     rowQueue.append(0)
 
     while count:
-        if switch==1:
+        if switch == 1:
             for i in range(n):
                 if rowPotentials[i] == None:
                     for j in columnQueue:
@@ -47,7 +49,7 @@ def checkOptimal(vect_A, vect_B, matr_C, matr_X):
 
 def dfsBasis(matr_X, m, v, list_v, pos0, min_val, switch):
     flag = False
-    print((v//m,v%m))
+    print((v // m, v % m))
     if switch == 1:
         min_vert = min(matr_X[v // m][v % m], min_val)
         if min_vert < min_val:
@@ -103,7 +105,7 @@ def newBasisVar(vect_A, vect_B, matr_C, matr_X, i0, j0):
     flag = True
     while flag:
         for v in vertexQueue:
-            if switch==0:
+            if switch == 0:
                 for pos in row_Edges[v]:
                     if list_Vertex[pos] == -1:
                         list_Vertex[pos] = v
@@ -124,27 +126,27 @@ def newBasisVar(vect_A, vect_B, matr_C, matr_X, i0, j0):
         vertexQueue = vertexQueueNext.copy()
         vertexQueueNext.clear()
     v = pos0
-    v_next=list_Vertex[v]
+    v_next = list_Vertex[v]
     v_min = v_next
     min_val = matr_X[v_min // m][v_min % m]
-    switch=0
+    switch = 0
     while True:
-        if switch==1 and matr_X[v // m][v % m]<min_val:
-            min_val=matr_X[v // m][v % m]
-            v_min=v
-        switch=1-switch
-        v=v_next
+        if switch == 1 and matr_X[v // m][v % m] < min_val:
+            min_val = matr_X[v // m][v % m]
+            v_min = v
+        switch = 1 - switch
+        v = v_next
         v_next = list_Vertex[v]
-        if v==pos0:
+        if v == pos0:
             break
-    switch=0
+    switch = 0
     v = pos0
     v_next = list_Vertex[v]
     while True:
-        if v==v_min:
-            matr_X[v//m][v%m]=-1
-        elif switch==1:
-            matr_X[v//m][v%m]-=min_val
+        if v == v_min:
+            matr_X[v // m][v % m] = -1
+        elif switch == 1:
+            matr_X[v // m][v % m] -= min_val
         else:
             matr_X[v // m][v % m] += min_val
         switch = 1 - switch
@@ -155,12 +157,12 @@ def newBasisVar(vect_A, vect_B, matr_C, matr_X, i0, j0):
 
 
 def optimalSolution(user_data):
-    n, m, vect_A, vect_B, matr_C, matr_X=deepcopy(user_data)
-    res=0
+    n, m, vect_A, vect_B, matr_C, matr_X = deepcopy(user_data)
+    res = 0
     i, j = checkOptimal(vect_A, vect_B, matr_C, matr_X)
     while i != -1:
-        res+=1
+        res += 1
         newBasisVar(vect_A, vect_B, matr_C, matr_X, i, j)
         i, j = checkOptimal(vect_A, vect_B, matr_C, matr_X)
-    txt=taskFunc(matr_C,matr_X)
-    return (n,m,vect_A, vect_B, matr_C, matr_X,txt,res)
+    txt = taskFunc(matr_C, matr_X)
+    return (n, m, vect_A, vect_B, matr_C, matr_X, txt, res)

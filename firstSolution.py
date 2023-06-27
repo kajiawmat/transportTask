@@ -16,8 +16,8 @@ def northWestAngle(vect_A, vect_B, matr_C, matr_X):
 def minCast(vect_A, vect_B, matr_C, matr_X):
     n = len(matr_X)
     m = len(matr_X[0])
-    rowNotUsed = [True]*n
-    colNotUsed = [True]*m
+    rowNotUsed = [True] * n
+    colNotUsed = [True] * m
     sortArray = []
     for i in range(n):
         sortArray.extend([(matr_C[i][j], i, j) for j in range(m)])
@@ -50,8 +50,8 @@ def FogelApproximation(vect_A, vect_B, matr_C, matr_X):
     i0, j0 = 0, 0
     Rows = [[] for i in range(n)]
     Columns = [[] for j in range(m)]
-    for i,vect_C in enumerate(matr_C):
-        for j,var_C in enumerate(vect_C):
+    for i, vect_C in enumerate(matr_C):
+        for j, var_C in enumerate(vect_C):
             Rows[i].append((var_C, i, j))
             Columns[j].append((var_C, i, j))
     for Row in Rows:
@@ -62,15 +62,15 @@ def FogelApproximation(vect_A, vect_B, matr_C, matr_X):
     if m > 1:
         min_Rows = [(Rows[i][1][0] - Rows[i][0][0], Rows[i][0][2]) for i in range(n)]
     else:
-        min_Rows = [(-1, 0)]*m
+        min_Rows = [(-1, 0)] * m
     if n > 1:
         min_Columns = [(Columns[j][1][0] - Columns[j][0][0], Columns[j][0][1]) for j in range(m)]
     else:
-        min_Columns = [(-1, 0)]*m
+        min_Columns = [(-1, 0)] * m
 
     while n0 and m0:
         if n0 + m0 == 2:
-            for ind,val in enumerate(vect_A):
+            for ind, val in enumerate(vect_A):
                 if val:
                     i0 = ind
                     break
@@ -84,11 +84,11 @@ def FogelApproximation(vect_A, vect_B, matr_C, matr_X):
             matr_X[i0][j0] = min_val
             break
 
-        max_val_Rows=max(min_Rows,key=lambda x:x[0])
-        max_val_Columns=max(min_Columns,key=lambda x:x[0])
-        if max_val_Rows[0]>max_val_Columns[0]:
-            i0=min_Rows.index(max_val_Rows)
-            j0=min_Rows[i][1]
+        max_val_Rows = max(min_Rows, key=lambda x: x[0])
+        max_val_Columns = max(min_Columns, key=lambda x: x[0])
+        if max_val_Rows[0] > max_val_Columns[0]:
+            i0 = min_Rows.index(max_val_Rows)
+            j0 = min_Rows[i][1]
         else:
             j0 = min_Columns.index(max_val_Columns)
             i0 = min_Columns[i][1]
@@ -100,25 +100,25 @@ def FogelApproximation(vect_A, vect_B, matr_C, matr_X):
         if vect_A[i0] == 0:
             Rows[i0].clear()
             min_Rows[i0] = (-1, 0)
-            n0-=1
+            n0 -= 1
             if n0 > 1:
-                for j,Column in enumerate(Columns):
+                for j, Column in enumerate(Columns):
                     if Column:
                         delCell(Column, i0, 1)
-                        min_Columns[j]=(Column[1][0] - Column[0][0], Column[0][1])
+                        min_Columns[j] = (Column[1][0] - Column[0][0], Column[0][1])
             else:
-                min_Columns = [(-1, 0)]*m
+                min_Columns = [(-1, 0)] * m
         if vect_B[j0] == 0:
             Columns[j0].clear()
             min_Columns[j0] = (-1, 0)
             m0 -= 1
             if m0 > 1:
-                for i,Row in enumerate(Rows):
+                for i, Row in enumerate(Rows):
                     if Row:
                         delCell(Row, j0, 2)
-                        min_Rows[i]=(Row[1][0] - Row[0][0], Row[0][2])
+                        min_Rows[i] = (Row[1][0] - Row[0][0], Row[0][2])
             else:
-                min_Columns = [(-1, 0)]*n
+                min_Columns = [(-1, 0)] * n
         if vect_A[i0] == vect_B[j0]:
             for i in range(n):
                 if i != i0 and matr_X[i][j0] == -1:
